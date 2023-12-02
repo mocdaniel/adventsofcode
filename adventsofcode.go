@@ -4,6 +4,7 @@ import (
 	"flag"
 
 	"github.com/mocdaniel/adventsofcode/internal/2023/day1"
+	"github.com/mocdaniel/adventsofcode/internal/2023/day2"
 )
 
 func main() {
@@ -18,7 +19,8 @@ func main() {
 		switch *day {
 		case "day1":
 			day1.Solve(*filePath)
-
+		case "day2":
+			day2.Solve(*filePath)
 		}
 	}
 }
