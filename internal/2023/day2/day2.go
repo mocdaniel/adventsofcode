@@ -83,6 +83,7 @@ func Solve(files ...string) {
 
 	scanner := bufio.NewScanner(file)
 	sum1 := 0
+	sum2 := 0
 	collection1 := probe{14, 12, 13}
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -98,6 +99,8 @@ func Solve(files ...string) {
 		if maxProbe.blue <= collection1.blue && maxProbe.red <= collection1.red && maxProbe.green <= collection1.green {
 			sum1 += parseGameId(splitLine[0])
 		}
+
+		sum2 += maxProbe.red * maxProbe.blue * maxProbe.green
 	}
 
 	if err := scanner.Err(); err != nil {
@@ -105,5 +108,5 @@ func Solve(files ...string) {
 		return
 	}
 
-	fmt.Printf("Sum1: %v\n", sum1)
+	fmt.Printf("PART 1: The sum of the possible games' IDs is %v\nPART 2: The sum of all games' power is %v\n", sum1, sum2)
 }
