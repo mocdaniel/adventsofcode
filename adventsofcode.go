@@ -7,6 +7,7 @@ import (
 	"github.com/mocdaniel/adventsofcode/internal/2023/day2"
 	"github.com/mocdaniel/adventsofcode/internal/2023/day3"
 	"github.com/mocdaniel/adventsofcode/internal/2023/day4"
+	"github.com/mocdaniel/adventsofcode/internal/2023/day5"
 )
 
 func main() {
@@ -27,6 +28,8 @@ func main() {
 			day3.Solve(*filePath)
 		case 4:
 			day4.Solve(*filePath)
+		case 5:
+			day5.Solve(*filePath)
 		}
 	}
 }
