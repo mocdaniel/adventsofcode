@@ -1,10 +1,10 @@
 package day1
 
 import (
-	"bufio"
 	"fmt"
-	"os"
 	"strings"
+
+	"github.com/mocdaniel/adventsofcode/internal/lib/files"
 )
 
 func replaceDigitStrings(line string) string {
@@ -44,35 +44,27 @@ func buildTwoDigits(chars *[]byte) int {
 	return firstInt*10 + lastInt
 }
 
-func Solve(files ...string) {
+func Solve(f ...string) {
 	var filePath string
-	if len(files) > 0 && len(files[0]) > 0 {
-		filePath = files[0]
+	if len(f) > 0 && len(f[0]) > 0 {
+		filePath = f[0]
 	} else {
 		filePath = "prompts/2023/day1.txt"
 	}
-	// Read file
-	file, err := os.Open(filePath)
+
+	lines, err := files.GetLines(filePath)
 	if err != nil {
-		fmt.Printf("Error opening file: %v\n", err)
+		fmt.Printf("Error reading file: %v\n", err)
 		return
 	}
-	defer file.Close()
 
-	scanner := bufio.NewScanner(file)
 	sum1 := 0
 	sum2 := 0
-	for scanner.Scan() {
-		line := scanner.Text()
+	for _, line := range lines {
 		line1 := []byte(line)
 		line2 := []byte(replaceDigitStrings(line))
 		sum1 += buildTwoDigits(&line1)
 		sum2 += buildTwoDigits(&line2)
-	}
-
-	if err := scanner.Err(); err != nil {
-		fmt.Printf("Error scanning file: %v\n", err)
-		return
 	}
 
 	fmt.Printf("PART 1: Sum of all calibration values: %v\nPART 2: Sum of all calibration values: %v\n", sum1, sum2)

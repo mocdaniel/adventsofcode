@@ -1,11 +1,11 @@
 package day3
 
 import (
-	"bufio"
 	"fmt"
-	"os"
 	"regexp"
 	"strconv"
+
+	"github.com/mocdaniel/adventsofcode/internal/lib/files"
 )
 
 var adjacentSymbolRegex = regexp.MustCompile(`[^\d\.]`)
@@ -49,31 +49,17 @@ func isSchematic(number []int, prevLine *[]byte, line *[]byte, nextLine *[]byte)
 	return false
 }
 
-func Solve(files ...string) {
+func Solve(f ...string) {
 	var filePath string
-	if len(files) > 0 && len(files[0]) > 0 {
-		filePath = files[0]
+	if len(f) > 0 && len(f[0]) > 0 {
+		filePath = f[0]
 	} else {
 		filePath = "prompts/2023/day3.txt"
 	}
-	// Read file
-	file, err := os.Open(filePath)
+
+	lines, err := files.GetLines(filePath)
 	if err != nil {
-		fmt.Printf("Error opening file: %v\n", err)
-		return
-	}
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
-
-	lines := [][]byte{}
-
-	for scanner.Scan() {
-		lines = append(lines, []byte(scanner.Text()))
-	}
-
-	if err := scanner.Err(); err != nil {
-		fmt.Printf("Error scanning file: %v\n", err)
+		fmt.Printf("Error reading file: %v\n", err)
 		return
 	}
 
@@ -83,19 +69,20 @@ func Solve(files ...string) {
 	for idx, line := range lines {
 		prevLine := []byte{}
 		if idx > 0 {
-			prevLine = lines[idx-1]
+			prevLine = []byte(lines[idx-1])
 		}
 		nextLine := []byte{}
 		if idx < len(lines)-1 {
-			nextLine = lines[idx+1]
+			nextLine = []byte(lines[idx+1])
 		}
-		foundNumbers := numberRegex.FindAllIndex(line, -1)
+		foundNumbers := numberRegex.FindAllIndex([]byte(line), -1)
 		for _, number := range foundNumbers {
 			n, _ := strconv.Atoi(string(line[number[0]:number[1]]))
-			if isSchematic(number, &prevLine, &line, &nextLine) {
+			l := []byte(line)
+			if isSchematic(number, &prevLine, &l, &nextLine) {
 				sum1 += n
 			}
-			findGears(number, &prevLine, &line, &nextLine, &gears, idx)
+			findGears(number, &prevLine, &l, &nextLine, &gears, idx)
 		}
 	}
 

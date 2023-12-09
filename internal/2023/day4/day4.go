@@ -1,13 +1,13 @@
 package day4
 
 import (
-	"bufio"
 	"fmt"
 	"math"
-	"os"
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/mocdaniel/adventsofcode/internal/lib/files"
 )
 
 func prepareNumbers(line string) (idx int, winners string, numbers string) {
@@ -33,47 +33,25 @@ func countMatches(w string, numbers string) int {
 	return count
 }
 
-func collectCards(lines *[]string, line int) int {
-	if line >= len(*lines) {
-		return 0
-	}
-
-	sum := 0
-	_, winners, numbers := prepareNumbers((*lines)[line])
-	matches := countMatches(winners, numbers)
-	sum += matches
-	for i := 1; i <= matches; i++ {
-		sum += collectCards(lines, line+i)
-	}
-
-	return sum
-}
-
-func Solve(files ...string) {
+func Solve(f ...string) {
 	var filePath string
-	if len(files) > 0 && len(files[0]) > 0 {
-		filePath = files[0]
+	if len(f) > 0 && len(f[0]) > 0 {
+		filePath = f[0]
 	} else {
 		filePath = "prompts/2023/day4.txt"
 	}
-	// Read file
-	file, err := os.Open(filePath)
-	if err != nil {
-		fmt.Printf("Error opening file: %v\n", err)
-		return
-	}
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
 
 	var sum1 float64 = 0
 
-	lines := []string{}
+	lines, err := files.GetLines(filePath)
+	if err != nil {
+		fmt.Printf("Error reading file: %v\n", err)
+		return
+	}
+
 	cardWins := make(map[int]int)
 
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-		line := scanner.Text()
+	for _, line := range lines {
 		idx, winners, numbers := prepareNumbers(line)
 		matches := countMatches(winners, numbers)
 		cardWins[idx] = matches
@@ -82,16 +60,10 @@ func Solve(files ...string) {
 		}
 	}
 
-	if err := scanner.Err(); err != nil {
-		fmt.Printf("Error scanning file: %v\n", err)
-		return
-	}
-
 	sum2 := 0
 	cardsWon := make([]int, len(lines))
 
 	for idx := range cardsWon {
-		fmt.Printf("Line %v\n", idx)
 		cardsWon[idx] += 1                   // we 'won' the card itself
 		for i := 0; i < cardsWon[idx]; i++ { // for each copy of this card we won
 			newWonCards := cardWins[idx+1]      // look up how many other cards this card wins us

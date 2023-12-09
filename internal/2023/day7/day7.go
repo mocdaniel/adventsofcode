@@ -1,12 +1,12 @@
 package day7
 
 import (
-	"bufio"
 	"fmt"
-	"os"
 	"slices"
 	"strconv"
 	"strings"
+
+	"github.com/mocdaniel/adventsofcode/internal/lib/files"
 )
 
 type ListItem struct {
@@ -178,29 +178,25 @@ func insert(list *ListItem, item *ListItem, joker bool) *ListItem {
 	return list
 }
 
-func Solve(files ...string) {
+func Solve(f ...string) {
 	var filePath string
-	if len(files) > 0 && len(files[0]) > 0 {
-		filePath = files[0]
+	if len(f) > 0 && len(f[0]) > 0 {
+		filePath = f[0]
 	} else {
 		filePath = "prompts/2023/day7.txt"
 	}
-	// Read file
-	file, err := os.Open(filePath)
+
+	lines, err := files.GetLines(filePath)
 	if err != nil {
-		fmt.Printf("Error opening file: %v\n", err)
+		fmt.Printf("Error reading prompt: %v\n", err)
 		return
 	}
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
 
 	handList1 := (*ListItem)(nil)
 	handList2 := (*ListItem)(nil)
 
 	// build list of hands
-	for scanner.Scan() {
-		line := scanner.Text()
+	for _, line := range lines {
 		handStr := strings.Split(line, " ")
 		prize, _ := strconv.Atoi(handStr[1])
 		hand1 := ListItem{hand: handStr[0], value: getHandValue(handStr[0], false), prize: prize, next: nil}

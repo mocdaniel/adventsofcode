@@ -7,7 +7,7 @@ import (
 func TestPrepareNumbers(t *testing.T) {
 	input := "Card 1: 1 2 3 4 5 | 6 7 8 9 10"
 	idx, winners, numbers := prepareNumbers(input)
-	if !("1 2 3 4 5" == winners && "6 7 8 9 10" == numbers && 1 == idx) {
+	if !(winners == "1 2 3 4 5" && numbers == "6 7 8 9 10" && idx == 1) {
 		t.Errorf("Expected winners to be %v, got %v", []byte("1 2 3 4 5"), winners)
 		t.Errorf("Expected numbers to be %v, got %v", []byte("6 7 8 9 10"), numbers)
 	}

@@ -1,12 +1,12 @@
 package day2
 
 import (
-	"bufio"
 	"fmt"
-	"os"
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/mocdaniel/adventsofcode/internal/lib/files"
 )
 
 type probe struct {
@@ -66,27 +66,24 @@ func parseProbe(s string) probe {
 	return probe{blue, red, green}
 }
 
-func Solve(files ...string) {
+func Solve(f ...string) {
 	var filePath string
-	if len(files) > 0 && len(files[0]) > 0 {
-		filePath = files[0]
+	if len(f) > 0 && len(f[0]) > 0 {
+		filePath = f[0]
 	} else {
 		filePath = "prompts/2023/day2.txt"
 	}
-	// Read file
-	file, err := os.Open(filePath)
+
+	lines, err := files.GetLines(filePath)
 	if err != nil {
-		fmt.Printf("Error opening file: %v\n", err)
+		fmt.Printf("Error reading file: %v\n", err)
 		return
 	}
-	defer file.Close()
 
-	scanner := bufio.NewScanner(file)
 	sum1 := 0
 	sum2 := 0
 	collection1 := probe{14, 12, 13}
-	for scanner.Scan() {
-		line := scanner.Text()
+	for _, line := range lines {
 		splitLine := strings.Split(line, ":")
 
 		probes := []probe{}
@@ -101,11 +98,6 @@ func Solve(files ...string) {
 		}
 
 		sum2 += maxProbe.red * maxProbe.blue * maxProbe.green
-	}
-
-	if err := scanner.Err(); err != nil {
-		fmt.Printf("Error scanning file: %v\n", err)
-		return
 	}
 
 	fmt.Printf("PART 1: The sum of the possible games' IDs is %v\nPART 2: The sum of all games' power is %v\n", sum1, sum2)
