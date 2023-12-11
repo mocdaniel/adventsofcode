@@ -4,6 +4,8 @@ import (
 	"flag"
 
 	"github.com/mocdaniel/adventsofcode/internal/2023/day1"
+	"github.com/mocdaniel/adventsofcode/internal/2023/day10"
+	"github.com/mocdaniel/adventsofcode/internal/2023/day11"
 	"github.com/mocdaniel/adventsofcode/internal/2023/day2"
 	"github.com/mocdaniel/adventsofcode/internal/2023/day3"
 	"github.com/mocdaniel/adventsofcode/internal/2023/day4"
@@ -42,6 +44,10 @@ func main() {
 			day8.Solve(*filePath)
 		case 9:
 			day9.Solve(*filePath)
+		case 10:
+			day10.Solve(*filePath)
+		case 11:
+			day11.Solve()
 		}
 	}
 }
