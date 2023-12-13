@@ -6,6 +6,8 @@ import (
 	"github.com/mocdaniel/adventsofcode/internal/2023/day1"
 	"github.com/mocdaniel/adventsofcode/internal/2023/day10"
 	"github.com/mocdaniel/adventsofcode/internal/2023/day11"
+	"github.com/mocdaniel/adventsofcode/internal/2023/day12"
+	"github.com/mocdaniel/adventsofcode/internal/2023/day13"
 	"github.com/mocdaniel/adventsofcode/internal/2023/day2"
 	"github.com/mocdaniel/adventsofcode/internal/2023/day3"
 	"github.com/mocdaniel/adventsofcode/internal/2023/day4"
@@ -45,9 +47,13 @@ func main() {
 		case 9:
 			day9.Solve(*filePath)
 		case 10:
-			day10.Solve(*filePath)
+			day10.Solve()
 		case 11:
 			day11.Solve()
+		case 12:
+			day12.Solve()
+		case 13:
+			day13.Solve()
 		}
 	}
 }
